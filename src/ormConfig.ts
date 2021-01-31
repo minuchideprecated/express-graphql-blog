@@ -1,16 +1,18 @@
 import { ConnectionOptions, createConnection } from 'typeorm';
+import { NodeEnv } from './config';
 
 interface DatabaseConfig {
   databaseUrl: string;
-  production: boolean;
+  nodeEnv: NodeEnv;
 }
 
-export const getConnectionOptions = ({ databaseUrl, production }: DatabaseConfig): ConnectionOptions => {
+export const getConnectionOptions = ({ databaseUrl, nodeEnv }: DatabaseConfig): ConnectionOptions => {
   return {
     type: 'postgres',
     url: databaseUrl,
     synchronize: true,
-    logging: production,
+    logging: nodeEnv === 'local' || nodeEnv === 'development',
+    dropSchema: nodeEnv === 'test',
     entities: ['entities/**/*.ts', 'entities/**/*.js'],
   };
 };

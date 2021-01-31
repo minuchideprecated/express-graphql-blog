@@ -4,6 +4,8 @@ Create a blog with Express and GraphQL.
 
 ## ✅ Testing
 
+* [x] createUser
+
 ### Will be removed
 
 * [x] sayHello
@@ -11,21 +13,22 @@ Create a blog with Express and GraphQL.
 
 ### Will be added
 
-* [ ] SignUp
-* [ ] SignIn
-* [ ] GetPost
-* [ ] GetPosts
-* [ ] CreatePost
-* [ ] UpdatePost
-* [ ] DeletePost
-* [ ] UpdateProfile
-* [ ] GetComments
-* [ ] AddComment
-* [ ] UpdateComment
-* [ ] DeleteComment
+* [ ] signIn
+* [ ] getPost
+* [ ] getPosts
+* [ ] createPost
+* [ ] updatePost
+* [ ] deletePost
+* [ ] updateProfile
+* [ ] getComments
+* [ ] addComment
+* [ ] updateComment
+* [ ] deleteComment
 
 ## 🛠 Features
 
+* [x] createUser
+
 ### Will be removed
 
 * [x] sayHello
@@ -33,15 +36,14 @@ Create a blog with Express and GraphQL.
 
 ### Will be added
 
-* [ ] SignUp
-* [ ] SignIn
-* [ ] GetPost
-* [ ] GetPosts
-* [ ] CreatePost
-* [ ] UpdatePost
-* [ ] DeletePost
-* [ ] UpdateProfile
-* [ ] GetComments
-* [ ] AddComment
-* [ ] UpdateComment
-* [ ] DeleteComment
+* [ ] signIn
+* [ ] getPost
+* [ ] getPosts
+* [ ] createPost
+* [ ] updatePost
+* [ ] deletePost
+* [ ] updateProfile
+* [ ] getComments
+* [ ] addComment
+* [ ] updateComment
+* [ ] deleteComment

@@ -6,6 +6,7 @@ import 'reflect-metadata';
 import { buildSchemaSync, Query, Resolver } from 'type-graphql';
 import { ConnectionOptions } from 'typeorm';
 import { createConn } from './ormConfig';
+import { UserResolver } from './resolvers/userResolver';
 
 const PATH = '/graphql';
 
@@ -35,7 +36,7 @@ interface StartServerConfig {
 
 export const createApolloServer = (production: boolean) => {
   const schema = buildSchemaSync({
-    resolvers: [GreetResolver],
+    resolvers: [GreetResolver, UserResolver],
   });
 
   const server = new ApolloServer({ schema, playground: !production });
@@ -46,12 +47,12 @@ export const createApolloServer = (production: boolean) => {
 export const createServer = async ({ connectionOptions, production }: ServerConfig) => {
   const app = express();
 
-  await createConn(connectionOptions);
+  const connection = await createConn(connectionOptions);
 
   const server = createApolloServer(production);
   server.applyMiddleware({ app, path: PATH });
 
-  return { app, server };
+  return { app, server, connection };
 };
 
 export const runServer = ({ app, port, production }: StartServerConfig) => {

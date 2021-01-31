@@ -2,13 +2,13 @@ import { createServer, runServer } from './app';
 import { config } from './config';
 import { getConnectionOptions } from './ormConfig';
 
-const { databaseUrl, env, port } = config;
+const { databaseUrl, nodeEnv, port } = config;
 
-const run = async () => {
-  const production = env === 'production';
+const start = async () => {
+  const production = nodeEnv === 'production';
   const connectionOptions = getConnectionOptions({
     databaseUrl,
-    production,
+    nodeEnv,
   });
 
   const { app } = await createServer({ connectionOptions, production });
@@ -16,4 +16,4 @@ const run = async () => {
   runServer({ app, port, production });
 };
 
-run();
+start();
