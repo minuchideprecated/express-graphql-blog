@@ -1,8 +1,8 @@
 import { gql } from 'apollo-server-express';
 import { createTestClient } from 'apollo-server-testing';
-import { createServer } from './app';
+import { createApolloServer } from './app';
 
-const { server } = createServer();
+const server = createApolloServer(false);
 const { query } = createTestClient(server);
 
 test('SayHello', async () => {
