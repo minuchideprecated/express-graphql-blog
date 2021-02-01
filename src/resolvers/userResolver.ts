@@ -1,5 +1,7 @@
-import { Arg, Mutation, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
+import { Context } from 'vm';
 import User from '../entities/User';
+import { isAuth } from '../middlewares/AuthMiddleware';
 import { CreateUserInput, SignInInput, SignInResponse } from '../types/userInput';
 import { createAccessToken } from '../utils/jwt';
 
@@ -11,12 +13,12 @@ export class UserResolver {
       const { email, password } = data;
       const user = await User.findOne({ email });
       if (user == null) {
-        throw new Error('invalid_password');
+        throw new Error('invalidPassword');
       }
 
       const isCorrect = await user.verifyPassword(password);
       if (isCorrect === false) {
-        throw new Error('invalid_password');
+        throw new Error('invalidPassword');
       }
 
       const accessToken = createAccessToken(user.id);
@@ -39,6 +41,16 @@ export class UserResolver {
       await User.create({ email, password, nickname }).save();
 
       return true;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  async getUserBySelf(@Ctx() { payload }: Context) {
+    try {
+      return await User.findOne({ where: { id: payload!.userId } });
     } catch (err) {
       return err;
     }

@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import 'reflect-metadata';
 import { buildSchemaSync, Query, Resolver } from 'type-graphql';
 import { ConnectionOptions } from 'typeorm';
+import { NodeEnv } from './config';
 import { createConn } from './ormConfig';
 import { UserResolver } from './resolvers/userResolver';
 
@@ -25,13 +26,12 @@ export class GreetResolver {
 
 interface ServerConfig {
   connectionOptions: ConnectionOptions;
-  production: boolean;
+  nodeEnv: NodeEnv;
 }
 
 interface StartServerConfig {
   app: express.Express;
   port: string | number;
-  production: boolean;
 }
 
 export const createApolloServer = (production: boolean) => {
@@ -44,8 +44,15 @@ export const createApolloServer = (production: boolean) => {
   return server;
 };
 
-export const createServer = async ({ connectionOptions, production }: ServerConfig) => {
+export const createServer = async ({ connectionOptions, nodeEnv }: ServerConfig) => {
   const app = express();
+  const production = nodeEnv === 'production';
+  const logType = production ? 'common' : 'dev';
+
+  if (nodeEnv !== 'test') {
+    app.use(morgan(logType));
+  }
+  app.use(compression());
 
   const connection = await createConn(connectionOptions);
 
@@ -55,12 +62,7 @@ export const createServer = async ({ connectionOptions, production }: ServerConf
   return { app, server, connection };
 };
 
-export const runServer = ({ app, port, production }: StartServerConfig) => {
-  const logType = production ? 'common' : 'dev';
-
-  app.use(morgan(logType));
-  app.use(compression());
-
+export const runServer = ({ app, port }: StartServerConfig) => {
   app.listen(port, () => {
     console.log(`🚀 Server ready at http://localhost:${port}${PATH}`);
   });

@@ -23,7 +23,7 @@ let query: ApolloServerTestClient['query'];
 let mutate: ApolloServerTestClient['mutate'];
 beforeAll(async () => {
   const { server, connection } = await createServer({
-    production: false,
+    nodeEnv: 'test',
     connectionOptions,
   });
 
@@ -180,9 +180,9 @@ describe('signIn', () => {
       variables: { email: '2ebf31b1-2a05-5b4f-8220-ab6dcef98a90', password: _password },
     });
 
-    const error = errors?.find((error) => error.message === 'invalid_password');
+    const error = errors?.find((error) => error.message === 'invalidPassword');
 
-    expect(error?.message).toEqual('invalid_password');
+    expect(error?.message).toEqual('invalidPassword');
   });
 
   test('should throw invalid password error with invalid password', async () => {
@@ -191,8 +191,8 @@ describe('signIn', () => {
       variables: { email: _email, password: 'aa1bb587-688d-56a7-bd7a-3669621ea6ee' },
     });
 
-    const error = errors?.find((error) => error.message === 'invalid_password');
+    const error = errors?.find((error) => error.message === 'invalidPassword');
 
-    expect(error?.message).toEqual('invalid_password');
+    expect(error?.message).toEqual('invalidPassword');
   });
 });
