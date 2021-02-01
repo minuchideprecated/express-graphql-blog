@@ -39,7 +39,7 @@ export const createApolloServer = (production: boolean) => {
     resolvers: [GreetResolver, UserResolver],
   });
 
-  const server = new ApolloServer({ schema, playground: !production });
+  const server = new ApolloServer({ schema, playground: !production, context: ({ req, res }) => ({ req, res }) });
 
   return server;
 };

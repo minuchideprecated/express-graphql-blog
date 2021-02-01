@@ -9,6 +9,7 @@ export interface Env {
   NODE_ENV: NodeEnv;
   DATABASE_URL: string;
   TEST_DATABASE_URL?: string;
+  JWT_ACCESS_TOKEN_SECRET: string;
 }
 
 const ENV = (process.env as unknown) as Env;
@@ -18,4 +19,5 @@ export const config = {
   nodeEnv: ENV.NODE_ENV || 'local',
   databaseUrl: ENV.DATABASE_URL,
   testDatabaseUrl: ENV.TEST_DATABASE_URL,
+  accessTokenSecret: ENV.JWT_ACCESS_TOKEN_SECRET,
 };

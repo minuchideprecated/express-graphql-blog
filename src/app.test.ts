@@ -3,7 +3,9 @@ import { ApolloServerTestClient, createTestClient } from 'apollo-server-testing'
 import { Connection } from 'typeorm';
 import { createServer } from './app';
 import { config } from './config';
+import User from './entities/User';
 import { getConnectionOptions } from './ormConfig';
+import { verifyAccessToken } from './utils/jwt';
 
 const { testDatabaseUrl } = config;
 
@@ -131,5 +133,66 @@ describe('createUser', () => {
     const error = validationErrors.find((x: any) => x.constraints.isLength != null).constraints.isLength;
 
     expect(error).toBe('password must be longer than or equal to 8 characters');
+  });
+});
+
+describe('signIn', () => {
+  // test email & password
+  const _email = 'test@test.com';
+  const _password = 'nicePassword1!';
+
+  const _SIGN_IN = gql`
+    mutation SignIn($email: String!, $password: String!) {
+      signIn(data: { email: $email, password: $password }) {
+        accessToken
+      }
+    }
+  `;
+
+  beforeAll(async () => {
+    await User.create({ email: _email, password: _password }).save();
+  });
+
+  afterAll(async () => {
+    const user = await User.findOne({ email: _email });
+    if (!!user) {
+      await user.remove();
+    }
+  });
+
+  test('should return accessToken', async () => {
+    const {
+      data: { signIn },
+    } = await mutate({
+      mutation: _SIGN_IN,
+      variables: { email: _email, password: _password },
+    });
+
+    const accessToken = signIn.accessToken;
+
+    const accessTokenInfo = verifyAccessToken(accessToken);
+    expect(typeof accessTokenInfo).toEqual('object');
+  });
+
+  test('should throw invalid password error with unregistered email', async () => {
+    const { errors } = await mutate({
+      mutation: _SIGN_IN,
+      variables: { email: '2ebf31b1-2a05-5b4f-8220-ab6dcef98a90', password: _password },
+    });
+
+    const error = errors?.find((error) => error.message === 'invalid_password');
+
+    expect(error?.message).toEqual('invalid_password');
+  });
+
+  test('should throw invalid password error with invalid password', async () => {
+    const { errors } = await mutate({
+      mutation: _SIGN_IN,
+      variables: { email: _email, password: 'aa1bb587-688d-56a7-bd7a-3669621ea6ee' },
+    });
+
+    const error = errors?.find((error) => error.message === 'invalid_password');
+
+    expect(error?.message).toEqual('invalid_password');
   });
 });
