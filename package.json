@@ -5,6 +5,7 @@
   "author": "minumi <kimkimee2@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "cd dist && node index.js",
     "test": "cd src && jest",
     "test:watch": "cd src && jest --watchAll",
     "dev": "cd src && nodemon --exec ts-node index.ts -e ts,graphql",
@@ -48,6 +49,7 @@
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^15.5.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.5.1",

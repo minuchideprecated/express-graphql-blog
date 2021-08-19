@@ -1,7 +1,7 @@
 import { sign, verify } from 'jsonwebtoken';
 import { config } from '../config';
 
-const accessTokenSecret = config.accessTokenSecret;
+const accessTokenSecret = config.service.secret;
 
 if (!accessTokenSecret) {
   throw new Error('No JWT Access Token Secret');

@@ -5,13 +5,20 @@ import { createServer } from './app';
 import { config } from './config';
 import User from './entities/User';
 import { getConnectionOptions } from './ormConfig';
+import { getPostgresUrl } from './utils/db';
 import { verifyAccessToken } from './utils/jwt';
 
-const { testDatabaseUrl } = config;
-
-if (!testDatabaseUrl) {
-  throw Error('No Test Database!');
+if (!config.test) {
+  throw Error('There is no configuration in config.json.');
 }
+const { host, user, password, port, database } = config.test.database;
+const testDatabaseUrl = getPostgresUrl({
+  host,
+  user,
+  password,
+  port,
+  database,
+});
 
 const connectionOptions = getConnectionOptions({
   databaseUrl: testDatabaseUrl,

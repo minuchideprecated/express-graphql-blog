@@ -1,0 +1,23 @@
+{
+  "service": {
+    "port": 8080,
+    "path": "/graphql",
+    "secret": "98acc77e10045196a6e3862ca7c3aec6",
+    "database": {
+      "host": "postgres",
+      "user": "blog",
+      "password": "blog",
+      "port": 5432,
+      "database": "blog"
+    }
+  },
+  "test": {
+    "database": {
+      "host": "blog",
+      "user": "blog",
+      "password": "blog",
+      "port": 5432,
+      "database": "blog"
+    }
+  }
+}

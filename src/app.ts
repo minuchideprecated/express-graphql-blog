@@ -9,8 +9,6 @@ import { NodeEnv } from './config';
 import { createConn } from './ormConfig';
 import { UserResolver } from './resolvers/userResolver';
 
-const PATH = '/graphql';
-
 @Resolver()
 export class GreetResolver {
   @Query(() => String)
@@ -27,11 +25,13 @@ export class GreetResolver {
 interface ServerConfig {
   connectionOptions: ConnectionOptions;
   nodeEnv: NodeEnv;
+  path: string;
 }
 
 interface StartServerConfig {
   app: express.Express;
   port: string | number;
+  path: string;
 }
 
 export const createApolloServer = (production: boolean) => {
@@ -44,7 +44,7 @@ export const createApolloServer = (production: boolean) => {
   return server;
 };
 
-export const createServer = async ({ connectionOptions, nodeEnv }: ServerConfig) => {
+export const createServer = async ({ connectionOptions, nodeEnv, path }: ServerConfig) => {
   const app = express();
   const production = nodeEnv === 'production';
   const logType = production ? 'common' : 'dev';
@@ -57,13 +57,13 @@ export const createServer = async ({ connectionOptions, nodeEnv }: ServerConfig)
   const connection = await createConn(connectionOptions);
 
   const server = createApolloServer(production);
-  server.applyMiddleware({ app, path: PATH });
+  server.applyMiddleware({ app, path });
 
   return { app, server, connection };
 };
 
-export const runServer = ({ app, port }: StartServerConfig) => {
+export const runServer = ({ app, port, path }: StartServerConfig) => {
   app.listen(port, () => {
-    console.log(`🚀 Server ready at http://localhost:${port}${PATH}`);
+    console.log(`🚀 Server ready at http://localhost:${port}${path}`);
   });
 };

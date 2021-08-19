@@ -30,11 +30,11 @@ class User extends BaseEntity {
   @Column({ type: 'text', unique: true, nullable: true })
   nickname?: string;
 
-  @Column('timestampz')
+  @Column('timestamptz')
   @CreateDateColumn()
   createdAt: string;
 
-  @Column('timestampz')
+  @Column('timestamptz')
   @UpdateDateColumn()
   updatedAt: string;
 
