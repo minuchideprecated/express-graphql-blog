@@ -15,8 +15,6 @@ const start = async () => {
     database,
   });
 
-  console.log(databaseUrl);
-
   const connectionOptions = getConnectionOptions({
     databaseUrl,
     nodeEnv,

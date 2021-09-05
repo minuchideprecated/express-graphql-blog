@@ -5,6 +5,8 @@ services:
     image: postgres
     volumes:
       - ./pgdata:/var/lib/postgres/data
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=blog
       - POSTGRES_USER=blog
@@ -20,5 +22,5 @@ services:
     links:
       - postgres:db
     ports:
-      - 8080:8080
+      - "8080:8080"
     restart: always

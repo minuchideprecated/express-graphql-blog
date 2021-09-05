@@ -23,10 +23,12 @@ interface Config {
   };
 }
 
+const CONFIG_FILENAME = `config.json`;
+
 export const nodeEnv = (process.env.NODE_ENV != null ? process.env.NODE_ENV : 'local') as NodeEnv;
 
-const cfgFileName = `config${nodeEnv === 'test' ? '.test' : ''}.json`;
-const cfgPath = resolve(__dirname, `../${cfgFileName}`);
+const cfgPath = resolve(__dirname, `../${CONFIG_FILENAME}`);
+
 if (!existsSync(cfgPath)) {
   throw new Error('config.json not found.');
 }

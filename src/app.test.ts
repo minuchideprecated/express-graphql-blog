@@ -32,6 +32,7 @@ beforeAll(async () => {
   const { server, connection } = await createServer({
     nodeEnv: 'test',
     connectionOptions,
+    path: '/graphql',
   });
 
   const client = createTestClient(server);
