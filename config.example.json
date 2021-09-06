@@ -13,11 +13,11 @@
   },
   "test": {
     "database": {
-      "host": "blog",
+      "host": "postgres",
       "user": "blog",
       "password": "blog",
       "port": 5432,
-      "database": "blog"
+      "database": "test"
     }
   }
 }
